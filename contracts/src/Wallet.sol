@@ -98,4 +98,28 @@ function executeBatch(
 }function _authorizeUpgrade(
         address
     ) internal view override _requireFromEntryPointOrFactory {}
+
+    function encodeSignatures(
+
+    bytes[] memory signatures
+
+) public pure returns (bytes memory) {
+
+    return abi.encode(signatures);
+
+}
+
+function getDeposit() public view returns (uint256) {
+
+    return entryPoint().balanceOf(address(this));
+
+}
+
+function addDeposit() public payable {
+
+    entryPoint().depositTo{value: msg.value}(address(this));
+
+}
+
+receive() external payable {}
 }
