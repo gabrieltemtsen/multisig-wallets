@@ -3,17 +3,40 @@ import Navbar from "@/components/navbar";
 import Providers from "@/components/providers";
 import { Inter } from "next/font/google";
 import Footer from "@/components/footer";
+import WalletList from "@/components/walletList";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import Link from "next/link";
+import { Fragment } from "react";
+import { useAccount } from "wagmi";
+
 export default function Home() {
+  const { isConnected, address } = useAccount();
+  const isMounted = useIsMounted();
+
+  if (!isMounted) return null;
   return (
-    <main    >
-      <Providers>
-    <div className="flex flex-col min-h-screen">
+    <>
+=    <div className="flex flex-col min-h-screen">
       <Navbar />
     <div className="grow" />
-    hrloo
+    <main className="flex flex-col py-6">
+      <div className="flex flex-col h-full gap-6 justify-center items-center">
+        <Fragment>
+          {isConnected && (
+            <Link
+              href="/create-wallet"
+              className="px-4 py-2 bg-blue-500 transition-colors hover:bg-blue-600 rounded-lg font-bold"
+            >
+              Create New Wallet
+            </Link>
+          )}
+
+          {address && <WalletList address={address} />}
+        </Fragment>
+      </div>
+    </main>
       <Footer />
     </div>
-  </Providers>
-    </main>
+    </>
   )
 }
